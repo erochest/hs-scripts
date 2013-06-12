@@ -14,7 +14,11 @@ category:            System
 build-type:          Simple
 cabal-version:       >=1.8
 
-executable hs-scripts
-  -- main-is:             
+executable dedup
+  main-is:             dedup/DeDup.hs
+  hs-source-dirs:      dedup/
   -- other-modules:       
   build-depends:       base ==4.6.*
+                     , classy-prelude
+                     , shelly
+                     , text
