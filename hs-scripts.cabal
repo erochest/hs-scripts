@@ -15,10 +15,16 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 executable dedup
-  main-is:             dedup/DeDup.hs
+  main-is:             DeDup.hs
   hs-source-dirs:      dedup/
   -- other-modules:       
   build-depends:       base ==4.6.*
                      , classy-prelude
                      , shelly
+                     , text
+
+executable sum-int
+  main-is:             SumInt.hs
+  hs-source-dirs:      sumint/
+  build-depends:       base ==4.6.*
                      , text
