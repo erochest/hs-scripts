@@ -28,3 +28,12 @@ executable sum-int
   hs-source-dirs:      sumint/
   build-depends:       base ==4.6.*
                      , text
+
+executable slice
+  main-is:             Slice.hs
+  hs-source-dirs:      slice/
+  build-depends:       base ==4.6.*
+                     , text
+                     , cmdargs
+                     , errors
+                     , attoparsec
