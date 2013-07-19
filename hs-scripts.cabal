@@ -22,6 +22,10 @@ executable dedup
                      , classy-prelude
                      , shelly
                      , text
+                     , unordered-containers
+                     , cryptohash
+                     , system-filepath
+                     , bytestring
 
 executable sum-int
   main-is:             SumInt.hs
