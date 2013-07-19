@@ -52,6 +52,9 @@ printIndex sha1 = mapM_ writePath
 main :: IO ()
 main = shelly $ verbosely $ do
     index <- foldM hashIndexFile M.empty =<< filterM test_f =<< Shelly.find "."
-    liftIO . mapM_ (uncurry printIndex) . filter ((> 1) . length . snd) $ M.toList index
+    liftIO . mapM_ (uncurry printIndex)
+           . sortBy (comparing fst)
+           . filter ((> 1) . length . snd)
+           $ M.toList index
 
 
