@@ -41,3 +41,9 @@ executable slice
                      , cmdargs
                      , errors
                      , attoparsec
+
+executable count-items
+  main-is:             CountItems.hs
+  hs-source-dirs:      count-items/
+  build-depends:       base ==4.6.*
+                     , text
