@@ -47,3 +47,11 @@ executable count-items
   hs-source-dirs:      count-items/
   build-depends:       base ==4.6.*
                      , text
+
+executable new-hs
+  main-is:             NewHs.hs
+  hs-source-dirs:      new-hs/
+  build-depends:       base ==4.6.*
+                     , text
+                     , shelly
+                     , system-filepath
