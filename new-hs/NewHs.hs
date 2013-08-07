@@ -5,38 +5,26 @@
 - steps.
 -
 - * Create a new directory with the name of the project.
--
 - * Run `git init` in the project.
--
 - * Run `cabal init` with the name of the package and some other defaults
 -   (but prompting for other things).
--
 - * `git add --all`
--
 - * `git commit -m "cabal init"`
--
 - * `echo "# PROJECT" > README.md`
--
 - * `git add README.md`
--
-- * `git commit -m "README"`
--
+- * `curl https://raw.github.com/github/gitignore/master/Haskell.gitignore > .gitignore`
+- * `git add .gitignore`
+- * `git commit -m "README and gitignore"`
 - * `hub create`
--
 - * `git push -u origin master`
 -
 - Possible improvements:
 -
 - * Add specs boilerplate for the project.
--
 - * Install dependencies with `cabal-dev`.
--
 - * Set up a Vagrant environment for a dev- and build-box.
--
 - * More options for passing to `cabal init`.
--
 - * Configuration file for defaults (default directory, email, license, etc.).
--
 - * Option for private (i.e., not on Github) projects.
 -
 -}
@@ -46,11 +34,13 @@ module Main where
 
 
 import           Control.Applicative
+import qualified Data.ByteString.Lazy as BS
 import           Data.Monoid
 import           System.Environment
 
 import qualified Data.Text as T
 import qualified Filesystem.Path.CurrentOS as FS
+import           Network.HTTP.Conduit
 import           Shelly
 
 default (T.Text)
@@ -59,6 +49,9 @@ default (T.Text)
 -- Configuration
 projectRootDirectory :: Sh FS.FilePath
 projectRootDirectory = maybe "./p" ((FS.</> "p") . fromText) <$> get_env "HOME"
+
+gitignoreUrl :: String
+gitignoreUrl = "https://raw.github.com/github/gitignore/master/Haskell.gitignore"
 
 defaultCabalOpts :: [T.Text]
 defaultCabalOpts = [ "--non-interactive"
@@ -80,6 +73,11 @@ cabal_ = command1_ "cabal" []
 hub_ :: T.Text -> [T.Text] -> Sh ()
 hub_ = command1_ "hub" []
 
+getTo :: String -> FS.FilePath -> Sh ()
+getTo url filename = do
+    output <- FS.encodeString . (FS.</> filename) <$> pwd
+    liftIO $ BS.writeFile output =<< simpleHttp url
+
 newProject :: T.Text -> Sh ()
 newProject projectName = do
     projectDir <- (FS.</> fromText projectName) <$> projectRootDirectory
@@ -93,8 +91,9 @@ newProject projectName = do
     git_ "add" ["--all"]
     git_ "commit" ["-m", "cabal init"]
     writefile "README.md" $ "\n# " <> projectName <> "\n\n"
-    git_ "add" ["README.md"]
-    git_ "commit" ["-m", "README"]
+    getTo gitignoreUrl ".gitignore"
+    git_ "add" ["README.md", ".gitignore"]
+    git_ "commit" ["-m", "README and gitignore"]
     hub_ "create" []
     git_ "push" ["-u", "origin", "master"]
     echo "done"
