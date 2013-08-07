@@ -20,7 +20,7 @@
 -
 - Possible improvements:
 -
-- * Add specs boilerplate for the project.
+- * Add specs boilerplate for the project (see ~/p/hs-project/).
 - * Install dependencies with `cabal-dev`.
 - * Set up a Vagrant environment for a dev- and build-box.
 - * More options for passing to `cabal init`.
