@@ -82,20 +82,30 @@ newProject :: T.Text -> Sh ()
 newProject projectName = do
     projectDir <- (FS.</> fromText projectName) <$> projectRootDirectory
     echo $ "Creating project directory: " <> toTextIgnore projectDir
+
     mkdir_p projectDir
     cd projectDir
+
+    -- git init
     git_ "init" []
+
+    -- cabal init
     let homepage = "--homepage=https://github.com/erochest/" <> projectName
         package  = "--package-name=" <> projectName
     cabal_ "init" (package:homepage:defaultCabalOpts)
     git_ "add" ["--all"]
     git_ "commit" ["-m", "cabal init"]
+
+    -- README and .gitignore
     writefile "README.md" $ "\n# " <> projectName <> "\n\n"
     getTo gitignoreUrl ".gitignore"
     git_ "add" ["README.md", ".gitignore"]
     git_ "commit" ["-m", "README and gitignore"]
+
+    -- Push to Github.
     hub_ "create" []
     git_ "push" ["-u", "origin", "master"]
+
     echo "done"
 
 main :: IO ()
