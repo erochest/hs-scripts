@@ -57,3 +57,12 @@ executable new-hs
                      , system-filepath
                      , http-conduit
                      , bytestring
+
+executable random-sample
+  main-is:             RandomSample.hs
+  hs-source-dirs:      random-sample/
+  build-depends:       base ==4.6.*
+                     , text
+                     , bytestring
+                     , unordered-containers
+                     , random
