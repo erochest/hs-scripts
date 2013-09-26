@@ -66,3 +66,13 @@ executable random-sample
                      , bytestring
                      , unordered-containers
                      , random
+
+executable shuffle
+  main-is:             Shuffle.hs
+  hs-source-dirs:      shuffle/
+  build-depends:       base ==4.6.*
+                     , text
+                     , unordered-containers
+                     , random
+                     , random-shuffle
+                     , optparse-applicative
