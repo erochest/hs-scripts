@@ -9,7 +9,6 @@ module Main where
 
 
 import           ClassyPrelude
-import           Control.Monad (filterM, foldM)
 import qualified Crypto.Hash               as H
 import qualified Data.ByteString           as BS
 import qualified Data.ByteString.Lazy      as BSL
