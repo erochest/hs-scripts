@@ -76,3 +76,12 @@ executable shuffle
                      , random
                      , random-shuffle
                      , optparse-applicative
+
+executable cabal-init
+  main-is:             CabalInit.hs
+  hs-source-dirs:      cabal-init/
+  build-depends:       base ==4.6.*
+                     , shelly
+                     , optparse-applicative
+                     , classy-prelude
+                     , text
