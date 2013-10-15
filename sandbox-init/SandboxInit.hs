@@ -43,6 +43,7 @@ main = do
             dist_exists <- test_d "dist"
             when dist_exists $ rm_rf "dist"
         cabal_ "install"   ["--only-dependencies"]
+        cabal_ "install"   ["hspec", "QuickCheck"]
         cabal_ "configure" installArgs
         cabal_ "build"     []
         when enableTests $ cabal_ "test" []
