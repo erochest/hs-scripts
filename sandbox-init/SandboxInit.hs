@@ -52,10 +52,11 @@ main = do
                 <*> switch (short 'p' <> long "enable-profiling" <> help "Enable profiling in configuration.")
                 <*> switch (short 'c' <> long "enable-coverage"  <> help "Enable coverage in configuration.")
                 <*> switch (short 'd' <> long "delete"           <> help "Delete the sandbox before building.")
-          opts  = info opts' (  fullDesc
-                             <> progDesc "Initialize the cabal sandbox environment."
-                             <> header "sandbox-init - a utility to initialize a sandbox for a cabal project."
-                             )
+          opts  = info (helper <*> opts')
+                       (  fullDesc
+                       <> progDesc "Initialize the cabal sandbox environment."
+                       <> header "sandbox-init - a utility to initialize a sandbox for a cabal project."
+                       )
 
 
 data SandboxInit = SandboxInit
