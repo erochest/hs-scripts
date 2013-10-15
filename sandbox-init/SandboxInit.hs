@@ -31,7 +31,7 @@ boolMaybe False _ = Nothing
 
 main :: IO ()
 main = do
-    ci@CabalInit{..} <- execParser opts
+    ci@SandboxInit{..} <- execParser opts
     shelly $ verbosely $ do
 
         let installArgs = catMaybes [ boolMaybe enableTests     "--enable-tests"
@@ -47,21 +47,21 @@ main = do
         cabal_ "build"     []
         when enableTests $ cabal_ "test" []
 
-    where opts' =   CabalInit
+    where opts' =   SandboxInit
                 <$> switch (short 't' <> long "enable-tests"     <> help "Enable tests in tests.")
                 <*> switch (short 'p' <> long "enable-profiling" <> help "Enable profiling in configuration.")
                 <*> switch (short 'c' <> long "enable-coverage"  <> help "Enable coverage in configuration.")
                 <*> switch (short 'd' <> long "delete"           <> help "Delete the sandbox before building.")
           opts  = info opts' (  fullDesc
                              <> progDesc "Initialize the cabal sandbox environment."
-                             <> header "cabal-init - a utility to initialize a cabal project."
+                             <> header "sandbox-init - a utility to initialize a sandbox for a cabal project."
                              )
 
 
-data CabalInit = CabalInit
-               { enableTests     :: Bool
-               , enableProfiling :: Bool
-               , enableCoverage  :: Bool
-               , deleteSandbox   :: Bool
-               } deriving (Show)
+data SandboxInit = SandboxInit
+                 { enableTests     :: Bool
+                 , enableProfiling :: Bool
+                 , enableCoverage  :: Bool
+                 , deleteSandbox   :: Bool
+                 } deriving (Show)
 

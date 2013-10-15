@@ -77,9 +77,9 @@ executable shuffle
                      , random-shuffle
                      , optparse-applicative
 
-executable cabal-init
-  main-is:             CabalInit.hs
-  hs-source-dirs:      cabal-init/
+executable sandbox-init
+  main-is:             SandboxInit.hs
+  hs-source-dirs:      sandbox-init/
   build-depends:       base ==4.6.*
                      , shelly
                      , optparse-applicative
