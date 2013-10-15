@@ -85,3 +85,14 @@ executable sandbox-init
                      , optparse-applicative
                      , classy-prelude
                      , text
+
+executable cabal-new
+  main-is:             CabalNew.hs
+  hs-source-dirs:      cabal-new
+  build-depends:       base ==4.6.*
+                     , shelly
+                     , optparse-applicative
+                     , classy-prelude
+                     , text
+                     , system-filepath
+                     , system-fileio
