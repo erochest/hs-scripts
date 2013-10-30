@@ -5,7 +5,7 @@ module Main where
 
 
 import           Control.Applicative
-import qualified Data.ByteString.Lazy as B
+import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Data.Text.Lazy as T
 import qualified Data.Text.Lazy.Encoding as TE
 import qualified Data.Text.Lazy.IO as TIO
@@ -68,6 +68,6 @@ main = do
     case args of
         Just k  -> do
             g <- getStdGen
-            B.interact (TE.encodeUtf8 . T.unlines . sample g k . T.lines . TE.decodeUtf8)
+            B.interact (B.unlines . sample g k . B.lines)
         Nothing -> putStrLn "usage: randomSample N"
 
