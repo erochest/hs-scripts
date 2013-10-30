@@ -18,27 +18,18 @@ import           System.Random
 
 
 type LineCache a = M.HashMap Int a
-data Triple a b c = T a b c
-                  deriving (Show)
 
 
-tfst :: Triple a b c -> a
-tfst (T a _ _) = a
-
-tsnd :: Triple a b c -> b
-tsnd (T _ b _) = b
-
-ttrd :: Triple a b c -> c
-ttrd (T _ _ c) = c
-
+triple :: a -> b -> c -> (a, b, c)
+triple a b c = (a, b, c)
 
 pairs :: [a] -> [[a]]
 pairs (x:y:zs) = [x, y] : pairs zs
 pairs [x]      = [[x]]
 pairs []       = []
 
-inSample :: Double -> Triple Int [Double] a -> Bool
-inSample n (T i (j:_) _) = j <= (n / fromIntegral i)
+inSample :: Double -> (Int, [Double], a) -> Bool
+inSample n (i, (j:_), _) = j <= (n / fromIntegral i)
 
 swapKeys :: LineCache a -> Int -> Int -> a -> LineCache a
 swapKeys m k1 k2 v = M.insert k2 v $ M.delete k1 m
@@ -49,11 +40,11 @@ sample g k xs = map snd
               . M.toList
               . L.foldl' sample' (M.fromList $ L.zipWith (,) ([0..] :: [Int]) xs1)
               . filter (inSample k')
-              $ L.zipWith3 T [k..] (pairs $ randomRs (0.0 :: Double, 1.0) g) xs2
+              $ L.zipWith3 triple [k..] (pairs $ randomRs (0.0 :: Double, 1.0) g) xs2
     where
         k'         = fromIntegral k
         (xs1, xs2) = L.splitAt k xs
-        sample' m (T i (_:j:_) x) = swapKeys m rm i x
+        sample' m (i, (_:j:_), x) = swapKeys m rm i x
             where ks = M.keys m
                   rm = ks !! truncate (j * k')
 
