@@ -48,16 +48,6 @@ executable count-items
   build-depends:       base ==4.6.*
                      , text
 
-executable new-hs
-  main-is:             NewHs.hs
-  hs-source-dirs:      new-hs/
-  build-depends:       base ==4.6.*
-                     , text
-                     , shelly
-                     , system-filepath
-                     , http-conduit
-                     , bytestring
-
 executable random-sample
   main-is:             RandomSample.hs
   hs-source-dirs:      random-sample/
