@@ -25,6 +25,11 @@
 --
 -- hub create
 -- git push -u origin master
+--
+-- For the future:
+--
+-- * set up a vagrant environment for a build box
+-- * configuration file to pass defaults to `cabal init` (email, etc).
 
 module Main where
 
