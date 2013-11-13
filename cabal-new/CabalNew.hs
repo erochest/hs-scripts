@@ -102,7 +102,7 @@ main = do
 
         chdir projectDir $ do
             git_ "init" []
-            withCommit "cabal init" $ cabal_ "init" ["--non-interactive"]
+            withCommit "cabal init" $ cabalInit config
 
             withCommit "apply hs project" $
                 chdir patchDir $
