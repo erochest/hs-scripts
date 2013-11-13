@@ -9,7 +9,7 @@
 --
 -- git init
 --
--- cabal init
+-- cabal init ...
 -- git add .
 -- git commit -m "cabal init"
 --
@@ -35,6 +35,7 @@ module Main where
 
 
 import           Control.Applicative
+import Data.Maybe (catMaybes)
 
 import           ClassyPrelude             hiding ((</>), (<>))
 import qualified Data.Text                 as T
@@ -47,7 +48,7 @@ default (T.Text)
 
 
 expandUserDir :: FilePath -> IO FilePath
-expandUserDir filepath = do
+expandUserDir filepath =
     case FS.encodeString filepath of
         ('~':'/':xs) -> (</> xs) <$> getHomeDirectory
         _            -> return filepath
@@ -68,6 +69,24 @@ withCommit msg op = op <* gitAddAllCommit msg
 cabal_ :: T.Text -> [T.Text] -> Sh ()
 cabal_ = command1_ "cabal" []
 
+ifSet :: Text -> String -> Maybe Text
+ifSet _ ""    = Nothing
+ifSet key val = Just $ "--" <> key <> " = " <> T.pack val
+
+ifTrue :: Text -> Bool -> Maybe Text
+ifTrue _ False  = Nothing
+ifTrue key True = Just $ "--" <> key
+
+cabalInit :: CabalNew -> Sh ()
+cabalInit CabalNew{..} =
+    cabal_ "init" $ catMaybes [ Just   "--non-interactive"
+                              , ifSet  "license"       projectLicense
+                              , ifSet  "email"         projectEmail
+                              , ifSet  "synopsis"      projectSynopsis
+                              , ifTrue "is-library"    projectLibrary
+                              , ifTrue "is-executable" projectExecutable
+                              ]
+
 
 main :: IO ()
 main = do
@@ -86,7 +105,7 @@ main = do
             withCommit "cabal init" $ cabal_ "init" ["--non-interactive"]
 
             withCommit "apply hs project" $
-                chdir patchDir $ do
+                chdir patchDir $
                     run_ (patchDir </> "apply-project") [toTextIgnore projectDir]
 
             withCommit "README.md" $ touchfile "README.md"
@@ -107,6 +126,18 @@ main = do
                               <> help "The directory containing the project to apply a patch on this project with.")
                 <*> switch    (  short 'P' <> long "private"
                               <> help "Don't publish this repository to github.")
+                <*> strOption (  short 'l' <> long "license" <> value "Apache-2.0"
+                              <> help "The cabal option for the license. Defaults to Apache 2.0.")
+                <*> strOption (  short 'e' <> long "email"
+                              <> help "The cabal option for the email.")
+                <*> strOption (  short 's' <> long "synopsis"
+                              <> help "The cabal option for the synopsis.")
+                <*> strOption (  short 'c' <> long "category"
+                              <> help "The cabal option for the category.")
+                <*> switch    (  long "is-library"
+                              <> help "The cabal option for the library.")
+                <*> switch    (  long "is-executable"
+                              <> help "The cabal option for the executable.")
           opts  = info (helper <*> opts') (  fullDesc
                                           <> progDesc "Create a new Haskell project with cabal, git, sandbox-init, and everything else."
                                           <> header "cabal-new - a utility to initialize a new Haskell project."
@@ -114,9 +145,15 @@ main = do
 
 
 data CabalNew = CabalNew
-              { projectRootDir  :: String
-              , projectName     :: String
-              , projectPatchDir :: String
-              , privateProject  :: Bool
+              { projectRootDir    :: String
+              , projectName       :: String
+              , projectPatchDir   :: String
+              , privateProject    :: Bool
+              , projectLicense    :: String
+              , projectEmail      :: String
+              , projectSynopsis   :: String
+              , projectCategory   :: String
+              , projectLibrary    :: Bool
+              , projectExecutable :: Bool
               } deriving (Show)
 
