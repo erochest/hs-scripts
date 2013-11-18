@@ -18,6 +18,15 @@ import           Shelly
 default (T.Text)
 
 
+testPlugins :: [T.Text]
+testPlugins = [ "tasty"
+              , "tasty-golden"
+              , "tasty-quickcheck"
+              , "tasty-hspec"
+              , "hspec"
+              , "QuickCheck"
+              ]
+
 cabal_ :: T.Text -> [T.Text] -> Sh ()
 cabal_ = command1_ "cabal" []
 
@@ -43,7 +52,7 @@ main = do
             dist_exists <- test_d "dist"
             when dist_exists $ rm_rf "dist"
         cabal_ "install"   ["--only-dependencies"]
-        cabal_ "install"   ["hspec", "QuickCheck"]
+        cabal_ "install"   testPlugins
         cabal_ "configure" installArgs
         cabal_ "build"     []
         when enableTests $ cabal_ "test" []
