@@ -71,7 +71,7 @@ cabal_ = command1_ "cabal" []
 
 ifSet :: Text -> String -> Maybe Text
 ifSet _ ""    = Nothing
-ifSet key val = Just $ "--" <> key <> " = " <> T.pack val
+ifSet key val = Just $ "--" <> key <> "=" <> T.pack val
 
 ifTrue :: Text -> Bool -> Maybe Text
 ifTrue _ False  = Nothing
