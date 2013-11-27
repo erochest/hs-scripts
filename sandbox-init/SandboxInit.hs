@@ -54,8 +54,6 @@ main = do
         cabal_ "install"   ["--only-dependencies"]
         cabal_ "install"   testPlugins
         cabal_ "configure" installArgs
-        cabal_ "build"     []
-        when enableTests $ cabal_ "test" []
 
     where opts' =   SandboxInit
                 <$> switch (short 't' <> long "enable-tests"     <> help "Enable tests in tests.")
