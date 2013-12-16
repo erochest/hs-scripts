@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
 
 
 module Main where
@@ -15,6 +16,11 @@ import           Shelly
 type ProjectName    = Text
 type ProjectVersion = Text
 
+data CabalBrew = CB
+               { packageName    :: ProjectName
+               , packageVersion :: ProjectVersion
+               } deriving (Show)
+
 
 brew_ :: Text -> [Text] -> Sh ()
 brew_ = command1_ "brew" []
@@ -22,32 +28,28 @@ brew_ = command1_ "brew" []
 cabal_ :: Text -> [Text] -> Sh ()
 cabal_ = command1_ "cabal" []
 
-cabalBrew :: ProjectName -> ProjectVersion -> Sh ()
-cabalBrew name version = do
+cabalBrew :: CabalBrew -> Sh ()
+cabalBrew CB{..} = do
     whenM (test_d sandbox) $ do
         echo $ "Cleaning out old keg for " <> keg
         brew_ "unlink" [keg]
         rm_rf sandbox
     chdir "/tmp" $ do
         whenM (test_f "cabal.sandbox.config") $ rm "cabal.sandbox.config"
-        echo $ "cabal " <> name <> "-" <> version <> " => " <> toTextIgnore sandbox
+        echo $ "cabal " <> packageName <> "-" <> packageVersion <> " => " <> toTextIgnore sandbox
         cabal_ "sandbox" ["init", "--sandbox=" <> toTextIgnore sandbox]
-        cabal_ "install" [name <> "-" <> version]
+        cabal_ "install" [packageName <> "-" <> packageVersion]
         brew_ "link" ["--overwrite", keg]
-    where keg     = "cabal-" <> name
+    where keg     = "cabal-" <> packageName
           sandbox = FS.concat [ "/usr"
                               , "local"
                               , "Cellar"
                               , fromText keg
-                              , fromText version
+                              , fromText packageVersion
                               ]
 
 main :: IO ()
-main = do
-    cfg <- execParser opts
-    shelly $ verbosely $ do
-        cabalBrew (projectName cfg) (projectVersion cfg)
-
+main = execParser opts >>= shelly . verbosely . cabalBrew
     where opts' =   CB
                 <$> textArg (metavar "NAME"    <> help "The name of the package to install.")
                 <*> textArg (metavar "VERSION" <> help "The version to install.")
@@ -62,10 +64,5 @@ textArg = argument (Just . T.pack)
 
 textOption :: Mod OptionFields Text -> Parser Text
 textOption fields = nullOption (reader (pure . T.pack) <> fields)
-
-data CabalBrew = CB
-               { projectName    :: ProjectName
-               , projectVersion :: ProjectVersion
-               } deriving (Show)
 
 
