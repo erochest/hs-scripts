@@ -2,9 +2,17 @@
 {-# LANGUAGE RecordWildCards   #-}
 
 
--- TODO: For Update, need to use EitherT String Sh more consistently.
+-- TODO: Break into its own project.
 -- TODO: Lookup version on install.
+-- TODO: Use an `InstalledProject` data type.
+-- TODO: Use `EitherT String Sh` more consistently.
+-- TODO: Use `WriterT (EitherT String Sh)` for summary of what happened.
+-- TODO: Consider a library other than `Shelly` for running shell commands. That would remove a dependency, and a fairly intrusive one, too.
 -- TODO: `list` command.
+-- TODO: Continue upgrading if one package fails.
+-- TODO: Print summary of actions at the end.
+-- TODO: `outdated` command.
+-- TODO: Print all outdated packages before upgrading any.
 
 
 module Main where
