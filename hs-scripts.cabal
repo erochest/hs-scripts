@@ -24,6 +24,12 @@ executable cabal-brew
                      , text
                      , system-filepath
                      , system-fileio
+                     , conduit
+                     , http-conduit
+                     , http-conduit-browser
+                     , Cabal
+                     , bytestring
+                     , errors
 
 executable dedup
   main-is:             DeDup.hs
