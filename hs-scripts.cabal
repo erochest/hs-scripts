@@ -14,23 +14,6 @@ category:            System
 build-type:          Simple
 cabal-version:       >=1.8
 
-executable cabal-brew
-  main-is:             CabalBrew.hs
-  hs-source-dirs:      cabal-brew
-  build-depends:       base ==4.6.*
-                     , shelly
-                     , optparse-applicative
-                     , classy-prelude
-                     , text
-                     , system-filepath
-                     , system-fileio
-                     , conduit
-                     , http-conduit
-                     , http-conduit-browser
-                     , Cabal
-                     , bytestring
-                     , errors
-
 executable dedup
   main-is:             DeDup.hs
   hs-source-dirs:      dedup/
