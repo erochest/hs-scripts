@@ -38,7 +38,7 @@ module Main where
 
 
 import           Control.Applicative
-import Data.Maybe (catMaybes)
+import qualified Data.Char                 as C
 
 import           ClassyPrelude             hiding ((</>), (<>))
 import qualified Data.Text                 as T
@@ -48,6 +48,14 @@ import           Options.Applicative
 import           Shelly
 
 default (T.Text)
+
+
+execStub :: Text
+execStub = "\
+    \{-# LANGUAGE OverloadedStrings #-}\n\n\
+    \module Main where\n\n\
+    \main :: IO ()\n\
+    \main = undefined\n\n"
 
 
 expandUserDir :: FilePath -> IO FilePath
@@ -90,6 +98,24 @@ cabalInit CabalNew{..} =
                               , ifTrue "is-executable" projectExecutable
                               ]
 
+sed :: FilePath -> (T.Text -> T.Text) -> Sh ()
+sed fp f = withTmpDir $ \tmpDir -> do
+    let tmpFile = tmpDir FS.</> FS.filename fp
+    mv fp tmpFile
+    writefile fp . T.unlines . map f . T.lines =<< readfile tmpFile
+
+setMainIs :: FilePath -> String -> Sh ()
+setMainIs cabalPath mainFile = sed cabalPath $ \line ->
+    if "-- main-is:" `T.isInfixOf` line
+        then takeWhile C.isSpace line <> "main-is:             " <> T.pack mainFile
+        else line
+
+toTitleCase :: Bool -> String -> String
+toTitleCase _     []       = []
+toTitleCase True  (c:cs)   = C.toUpper c : toTitleCase False cs
+toTitleCase _     ('-':cs) = toTitleCase True cs
+toTitleCase False (c:cs)   = c : toTitleCase False cs
+
 
 main :: IO ()
 main = do
@@ -100,6 +126,9 @@ main = do
         let name       = T.pack $ projectName config
             projectDir = rootDir </> name
             private    = privateProject config
+            mainFile   = toTitleCase True (projectName config) ++ ".hs"
+            mainPath   = FS.decodeString mainFile
+            cabal      = FS.decodeString (projectName config) FS.<.> "cabal"
 
         mkdir_p projectDir
 
@@ -112,6 +141,12 @@ main = do
                     run_ (patchDir </> "apply-project") [toTextIgnore projectDir]
 
             withCommit "README.md" $ touchfile "README.md"
+
+            when (projectExecutable config) $
+                withCommit "Added stub main file." $ do
+                    writefile mainPath execStub
+                    setMainIs cabal mainFile
+
             cabal_ "sandbox" ["init"]
             run_ "sandbox-init" ["--enable-tests"]
 
