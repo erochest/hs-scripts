@@ -5,6 +5,9 @@
 {-# OPTIONS_GHC -fno-warn-type-defaults #-}
 
 
+-- TODO: Flag to use castle (and maybe specify the castle name). Otherwise,
+-- it uses a castle with the same name as the project.
+
 -- mkdir ~/p/PROJECT
 --
 -- git init

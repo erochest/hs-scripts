@@ -51,8 +51,8 @@ main = do
             cabalSandbox_ "delete" [] >> cabalSandbox_ "init" []
             dist_exists <- test_d "dist"
             when dist_exists $ rm_rf "dist"
-        cabal_ "install"   ["--only-dependencies"]
-        cabal_ "install"   testPlugins
+        cabal_ "install"   ["-j", "--only-dependencies"]
+        cabal_ "install"   ("-j" : testPlugins)
         cabal_ "configure" installArgs
 
     where opts' =   SandboxInit
