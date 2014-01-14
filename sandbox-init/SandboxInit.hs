@@ -8,8 +8,6 @@
 module Main where
 
 
-import           Data.Maybe (catMaybes)
-
 import           ClassyPrelude hiding ((<>))
 import qualified Data.Text as T
 import           Options.Applicative
@@ -31,7 +29,7 @@ cabal_ :: T.Text -> [T.Text] -> Sh ()
 cabal_ = command1_ "cabal" []
 
 cabalSandbox_ :: T.Text -> [T.Text] -> Sh ()
-cabalSandbox_ cmd args = command1_ "cabal" [] "sandbox" $ cmd : args
+cabalSandbox_ cmdName args = command1_ "cabal" [] "sandbox" $ cmdName : args
 
 boolMaybe :: Bool -> a -> Maybe a
 boolMaybe True  x = Just x
@@ -40,7 +38,7 @@ boolMaybe False _ = Nothing
 
 main :: IO ()
 main = do
-    ci@SandboxInit{..} <- execParser opts
+    SandboxInit{..} <- execParser opts
     shelly $ verbosely $ do
 
         let installArgs = catMaybes [ boolMaybe enableTests     "--enable-tests"
