@@ -20,9 +20,11 @@ testPlugins :: [T.Text]
 testPlugins = [ "tasty"
               , "tasty-golden"
               , "tasty-quickcheck"
-              , "tasty-hspec"
-              , "hspec"
+              , "tasty-smallcheck"
+              -- , "tasty-hspec"
+              -- , "hspec"
               , "QuickCheck"
+              , "smallcheck"
               ]
 
 cabal_ :: T.Text -> [T.Text] -> Sh ()
