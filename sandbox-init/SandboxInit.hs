@@ -16,17 +16,6 @@ import           Shelly
 default (T.Text)
 
 
-testPlugins :: [T.Text]
-testPlugins = [ "tasty"
-              , "tasty-golden"
-              , "tasty-quickcheck"
-              , "tasty-smallcheck"
-              -- , "tasty-hspec"
-              -- , "hspec"
-              , "QuickCheck"
-              , "smallcheck"
-              ]
-
 cabal_ :: T.Text -> [T.Text] -> Sh ()
 cabal_ = command1_ "cabal" []
 
@@ -51,8 +40,10 @@ main = do
             cabalSandbox_ "delete" [] >> cabalSandbox_ "init" []
             dist_exists <- test_d "dist"
             when dist_exists $ rm_rf "dist"
-        cabal_ "install"   ["-j", "--only-dependencies"]
-        cabal_ "install"   ("-j" : testPlugins)
+        cabal_ "install" $ catMaybes [ Just "-j"
+                                     , Just "--only-dependencies"
+                                     , boolMaybe enableTests "--enable-tests"
+                                     ]
         cabal_ "configure" installArgs
 
     where opts' =   SandboxInit
