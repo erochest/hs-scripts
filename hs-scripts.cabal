@@ -18,7 +18,7 @@ executable dedup
   main-is:             DeDup.hs
   hs-source-dirs:      dedup/
   -- other-modules:       
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , classy-prelude
                      , shelly
                      , text
@@ -30,13 +30,13 @@ executable dedup
 executable sum-int
   main-is:             SumInt.hs
   hs-source-dirs:      sumint/
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , text
 
 executable slice
   main-is:             Slice.hs
   hs-source-dirs:      slice/
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , text
                      , cmdargs
                      , errors
@@ -45,13 +45,13 @@ executable slice
 executable count-items
   main-is:             CountItems.hs
   hs-source-dirs:      count-items/
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , text
 
 executable random-sample
   main-is:             RandomSample.hs
   hs-source-dirs:      random-sample/
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , text
                      , bytestring
                      , unordered-containers
@@ -60,7 +60,7 @@ executable random-sample
 executable shuffle
   main-is:             Shuffle.hs
   hs-source-dirs:      shuffle/
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , text
                      , unordered-containers
                      , random
@@ -70,7 +70,7 @@ executable shuffle
 executable sandbox-init
   main-is:             SandboxInit.hs
   hs-source-dirs:      sandbox-init/
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.7.*
                      , shelly
                      , optparse-applicative
                      , classy-prelude
