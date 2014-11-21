@@ -24,7 +24,7 @@ run:
 
 # Link everything into ~/bin/
 install:
-	for fn in .cabal-sandbox/bin/*; do ln -fs $${fn} ${HOME}/bin; done
+	for fn in .cabal-sandbox/bin/*; do ln -fs `pwd`/$${fn} ${HOME}/bin; done
 
 hlint:
 	hlint *.hs src specs
