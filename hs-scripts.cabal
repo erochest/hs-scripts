@@ -14,6 +14,18 @@ category:            System
 build-type:          Simple
 cabal-version:       >=1.8
 
+executable dir-report
+  main-is:             DirReport.hs
+  hs-source-dirs:      dir-report/
+  build-depends:       base ==4.7.*
+                     , text
+                     , text-format
+                     , shelly
+                     , system-filepath
+                     , system-fileio
+                     , unordered-containers
+                     , hashable
+
 executable sum-int
   main-is:             SumInt.hs
   hs-source-dirs:      sumint/
