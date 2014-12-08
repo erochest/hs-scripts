@@ -42,14 +42,13 @@ main = do
     TIO.getContents >>= shuffleText shuffleUnit >>= TIO.putStr
 
     where opts' =   ShuffleOpts
-                <$> nullOption (  long "unit"
-                               <> short 'u'
-                               <> metavar "UNIT"
-                               <> value Line
-                               <> reader auto
-                               <> help "The unit to shuffle on. One of Char, \
-                                       \Word, or Line. Default is 'Line'."
-                               )
+                <$> option auto (  long "unit"
+                                <> short 'u'
+                                <> metavar "UNIT"
+                                <> value Line
+                                <> help "The unit to shuffle on. One of Char, \
+                                        \Word, or Line. Default is 'Line'."
+                                )
           opts  = info (helper <*> opts') (  fullDesc
                                           <> progDesc "Shuffle the input on unit."
                                           <> header "shuffle"
