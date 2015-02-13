@@ -54,7 +54,7 @@ executable random-sample
   build-depends:       base ==4.7.*
                      , bytestring
                      , unordered-containers
-                     , random
+                     , mersenne-random-pure64
 
 executable shuffle
   main-is:             Shuffle.hs
