@@ -7,11 +7,10 @@ module Main where
 import           Control.Applicative
 import           Control.Error
 import           Data.Attoparsec.Text
+import qualified Data.ByteString.Lazy.Char8 as B
 import           Data.Data
-import qualified Data.List as L
-import qualified Data.Text as T
-import qualified Data.Text.Lazy as TL
-import qualified Data.Text.Lazy.IO as TIO
+import qualified Data.List                  as L
+import qualified Data.Text                  as T
 import           System.Console.CmdArgs
 
 -- Command-line processing
@@ -46,7 +45,7 @@ checkSpan s                              = Right s
 
 -- slice function
 
-slice :: Span -> [TL.Text] -> [TL.Text]
+slice :: Span -> [B.ByteString] -> [B.ByteString]
 slice (f, t) =
         maybe id (L.take . flip (-) (fromMaybe 0 f)) t . maybe id L.drop f
 
@@ -54,7 +53,7 @@ slice (f, t) =
  - - (Nothing, Nothing) = id               . id
  - - (Just f', Nothing) = L.drop f'        . id
  - - (Nothing, Just t') = L.take (t' - 0)  . id
- - - (Just f', Just t') = L.take (t' - f') . L.drop f' 
+ - - (Just f', Just t') = L.take (t' - f') . L.drop f'
  -}
 
 {- Originally:
@@ -72,5 +71,5 @@ main = runScript $ do
     spanPair <- scriptIO (cmdArgs spanSpec) >>=
                 hoistEither . parseSpan     >>=
                 hoistEither . checkSpan
-    scriptIO . TIO.interact $ TL.unlines . slice spanPair . TL.lines
+    scriptIO . B.interact $ B.unlines . slice spanPair . B.lines
 

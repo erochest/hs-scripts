@@ -36,6 +36,7 @@ executable slice
   main-is:             Slice.hs
   hs-source-dirs:      slice/
   build-depends:       base ==4.7.*
+                     , bytestring
                      , text
                      , cmdargs
                      , errors
