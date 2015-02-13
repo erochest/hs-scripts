@@ -24,6 +24,7 @@ run:
 
 # Link everything into ~/bin/
 install:
+	cabal install
 	for fn in .cabal-sandbox/bin/*; do ln -fs `pwd`/$${fn} ${HOME}/bin; done
 
 hlint:
