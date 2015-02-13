@@ -51,7 +51,6 @@ executable random-sample
   main-is:             RandomSample.hs
   hs-source-dirs:      random-sample/
   build-depends:       base ==4.7.*
-                     , text
                      , bytestring
                      , unordered-containers
                      , random

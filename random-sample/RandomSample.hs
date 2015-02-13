@@ -6,11 +6,8 @@ module Main where
 
 import           Control.Applicative
 import qualified Data.ByteString.Lazy.Char8 as B
-import qualified Data.Text.Lazy as T
-import qualified Data.Text.Lazy.Encoding as TE
-import qualified Data.Text.Lazy.IO as TIO
-import qualified Data.HashMap.Strict as M
-import qualified Data.List as L
+import qualified Data.HashMap.Strict        as M
+import qualified Data.List                  as L
 import           Data.Maybe
 import           Data.Ord
 import           System.Environment
