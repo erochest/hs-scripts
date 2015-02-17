@@ -14,8 +14,6 @@ import           Data.Traversable
 import           System.Environment
 import           System.Random.Mersenne.Pure64
 
-import Debug.Trace
-
 
 type LineCache a = M.HashMap Int a
 
@@ -34,8 +32,7 @@ inSample :: Double -> InputData a -> Bool
 inSample n (i, (j, _), _) = j <= (n / fromIntegral i)
 
 swapKeys :: LineCache a -> Int -> Int -> a -> LineCache a
-swapKeys m k1 k2 v = trace ("swap " ++ show k1 ++ " / " ++ show k2 ++ " / " ++ show (M.keys m')) m'
-    where m' = M.insert k2 v $ M.delete k1 m
+swapKeys m k1 k2 v = M.insert k2 v $ M.delete k1 m
 
 sample :: PureMT -> Int -> [a] -> [a]
 sample g k xs = map snd
@@ -50,12 +47,7 @@ sample g k xs = map snd
         (xs1, xs2) = L.splitAt k xs
         sample' m (i, (_, j), x) = swapKeys m rm i x
             where ks = M.keys m
-                  rm = ks !! truncate (trace (  "i = " ++ show i
-                                             ++ " / j = " ++ show j
-                                             ++ " / k' = " ++ show k'
-                                             ++ " / keys = " ++ show ks
-                                             ++ " / n = " ++ show (truncate (j * k'))
-                                             ++ " / floor n = " ++ show (floor (j * k'))) j * k')
+                  rm = ks !! truncate (j * k')
 
 
 readInt :: String -> Int
