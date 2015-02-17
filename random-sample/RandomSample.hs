@@ -34,7 +34,8 @@ inSample :: Double -> InputData a -> Bool
 inSample n (i, (j, _), _) = j <= (n / fromIntegral i)
 
 swapKeys :: LineCache a -> Int -> Int -> a -> LineCache a
-swapKeys m k1 k2 v = trace ("swap " ++ show k1 ++ " / " ++ show k2) $ M.insert k2 v $ M.delete k1 m
+swapKeys m k1 k2 v = trace ("swap " ++ show k1 ++ " / " ++ show k2 ++ " / " ++ show (M.keys m')) m'
+    where m' = M.insert k2 v $ M.delete k1 m
 
 sample :: PureMT -> Int -> [a] -> [a]
 sample g k xs = map snd
@@ -43,7 +44,7 @@ sample g k xs = map snd
               . L.foldl' sample' (M.fromList $ zip ([0..] :: [Int]) xs1)
               . filter (inSample k')
               . snd
-              $ mapAccumL randomPairs (g, 0 :: Int) xs2
+              $ mapAccumL randomPairs (g, k) xs2
     where
         k'         = fromIntegral k
         (xs1, xs2) = L.splitAt k xs
