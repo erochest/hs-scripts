@@ -14,21 +14,27 @@ import           Data.Traversable
 import           System.Environment
 import           System.Random.Mersenne.Pure64
 
+import Debug.Trace
+
 
 type LineCache a = M.HashMap Int a
 
+type RandomPair  = (Double, Double)
+type PairState   = (PureMT, Int)
+type InputData a = (Int, RandomPair, a)
 
-randomPairs :: (PureMT, Int) -> a -> ((PureMT, Int), (Int, [Double], a))
+
+randomPairs :: PairState -> a -> (PairState, InputData a)
 randomPairs (g0, n) x =
     let (r0, g1) = randomDouble g0
-        (r1, g2) = randomDouble g2
-    in  ((g2, succ n), (n, [r0, r1], x))
+        (r1, g2) = randomDouble g1
+    in  ((g2, succ n), (n, (r0, r1), x))
 
-inSample :: Double -> (Int, [Double], a) -> Bool
-inSample n (i, j:_, _) = j <= (n / fromIntegral i)
+inSample :: Double -> InputData a -> Bool
+inSample n (i, (j, _), _) = j <= (n / fromIntegral i)
 
 swapKeys :: LineCache a -> Int -> Int -> a -> LineCache a
-swapKeys m k1 k2 v = M.insert k2 v $ M.delete k1 m
+swapKeys m k1 k2 v = trace ("swap " ++ show k1 ++ " / " ++ show k2) $ M.insert k2 v $ M.delete k1 m
 
 sample :: PureMT -> Int -> [a] -> [a]
 sample g k xs = map snd
@@ -41,9 +47,14 @@ sample g k xs = map snd
     where
         k'         = fromIntegral k
         (xs1, xs2) = L.splitAt k xs
-        sample' m (i, _:j:_, x) = swapKeys m rm i x
+        sample' m (i, (_, j), x) = swapKeys m rm i x
             where ks = M.keys m
-                  rm = ks !! truncate (j * k')
+                  rm = ks !! truncate (trace (  "i = " ++ show i
+                                             ++ " / j = " ++ show j
+                                             ++ " / k' = " ++ show k'
+                                             ++ " / keys = " ++ show ks
+                                             ++ " / n = " ++ show (truncate (j * k'))
+                                             ++ " / floor n = " ++ show (floor (j * k'))) j * k')
 
 
 readInt :: String -> Int
