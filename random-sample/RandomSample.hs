@@ -5,9 +5,11 @@ module Main where
 
 
 import           Control.Applicative
-import qualified Data.ByteString.Lazy.Char8    as B
-import qualified Data.HashMap.Strict           as M
-import qualified Data.List                     as L
+import           Control.Monad
+import           Control.Monad.Trans.State.Strict
+import qualified Data.ByteString.Lazy.Char8       as B
+import qualified Data.HashMap.Strict              as M
+import qualified Data.List                        as L
 import           Data.Maybe
 import           Data.Ord
 import           Data.Traversable
@@ -62,4 +64,3 @@ main = do
             g <- newPureMT
             B.interact (B.unlines . sample g k . B.lines)
         Nothing -> putStrLn "usage: randomSample N"
-

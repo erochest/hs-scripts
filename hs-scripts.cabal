@@ -17,7 +17,7 @@ cabal-version:       >=1.8
 executable dir-report
   main-is:             DirReport.hs
   hs-source-dirs:      dir-report/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , text
                      , text-format
                      , shelly
@@ -29,13 +29,13 @@ executable dir-report
 executable sum-int
   main-is:             SumInt.hs
   hs-source-dirs:      sumint/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , text
 
 executable slice
   main-is:             Slice.hs
   hs-source-dirs:      slice/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , bytestring
                      , text
                      , cmdargs
@@ -45,21 +45,22 @@ executable slice
 executable count-items
   main-is:             CountItems.hs
   hs-source-dirs:      count-items/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , text
 
 executable random-sample
   main-is:             RandomSample.hs
   hs-source-dirs:      random-sample/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , bytestring
                      , unordered-containers
                      , mersenne-random-pure64
+                     , transformers
 
 executable shuffle
   main-is:             Shuffle.hs
   hs-source-dirs:      shuffle/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , text
                      , unordered-containers
                      , random
@@ -69,7 +70,7 @@ executable shuffle
 executable sandbox-init
   main-is:             SandboxInit.hs
   hs-source-dirs:      sandbox-init/
-  build-depends:       base ==4.7.*
+  build-depends:       base ==4.8.*
                      , shelly
                      , optparse-applicative
                      , classy-prelude
