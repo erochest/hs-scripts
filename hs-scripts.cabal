@@ -53,8 +53,10 @@ executable random-sample
   hs-source-dirs:      random-sample/
   build-depends:       base ==4.8.*
                      , bytestring
+                     , conduit
+                     , conduit-combinators
                      , unordered-containers
-                     , mersenne-random-pure64
+                     , mwc-random
                      , transformers
 
 executable shuffle
