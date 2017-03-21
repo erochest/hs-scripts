@@ -68,13 +68,3 @@ executable shuffle
                      , random
                      , random-shuffle
                      , optparse-applicative
-
-executable sandbox-init
-  main-is:             SandboxInit.hs
-  hs-source-dirs:      sandbox-init/
-  build-depends:       base >=4.8 && <5.0
-                     , shelly
-                     , optparse-applicative
-                     , classy-prelude
-                     , text
-
