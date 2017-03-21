@@ -1,14 +1,10 @@
 
-FLAGS=--enable-tests
+FLAGS=--pedantic
 
 all: init docs package
 
 init:
-	cabal sandbox init
 	make deps
-
-run:
-	cabal run
 
 # docs:
 # generate api documentation
@@ -24,30 +20,18 @@ run:
 
 # Link everything into ~/bin/
 install:
-	cabal install
-	for fn in .cabal-sandbox/bin/*; do ln -fs `pwd`/$${fn} ${HOME}/bin; done
+	stack install
 
 hlint:
 	hlint *.hs src specs
 
 clean:
-	cabal clean
-
-distclean: clean
-	cabal sandbox delete
-
-configure: clean
-	cabal configure ${FLAGS}
-
-deps: clean
-	cabal install --only-dependencies --allow-newer ${FLAGS}
-	make configure
+	stack clean
 
 build:
-	cabal build
+	stack build --pedantic
 
-restart: distclean init build
-
-rebuild: clean configure build
+watch:
+	stack build --pedantic --file-watch
 
 .PHONY: all init run clean distclean configure deps build rebuild hlint

@@ -1,15 +1,16 @@
-{-# LANGUAGE NoImplicitPrelude          #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE ExtendedDefaultRules       #-}
-{-# LANGUAGE RecordWildCards            #-}
+{-# LANGUAGE ExtendedDefaultRules #-}
+{-# LANGUAGE NoImplicitPrelude    #-}
+{-# LANGUAGE OverloadedStrings    #-}
+{-# LANGUAGE RecordWildCards      #-}
 {-# OPTIONS_GHC -fno-warn-type-defaults #-}
 
 
 module Main where
 
 
-import           ClassyPrelude hiding ((<>))
-import qualified Data.Text as T
+import           ClassyPrelude       hiding ((<>))
+import           Data.Monoid
+import qualified Data.Text           as T
 import           Options.Applicative
 import           Shelly
 

@@ -4,18 +4,18 @@
 module Main where
 
 
-import           Conduit
-import           Control.Applicative
-import           Control.Monad
-import           Control.Monad.Trans.State.Strict
-import qualified Data.ByteString.Lazy.Char8       as B
-import qualified Data.HashMap.Strict              as M
-import qualified Data.List                        as L
+-- import           Conduit
+-- import           Control.Applicative
+-- import           Control.Monad
+-- import           Control.Monad.Trans.State.Strict
+-- import qualified Data.ByteString.Lazy.Char8       as B
+import qualified Data.HashMap.Strict as M
+import qualified Data.List           as L
 import           Data.Maybe
 import           Data.Ord
 import           Data.Traversable
 import           System.Environment
-import           System.Random.MWC
+-- import           System.Random.MWC
 
 
 type LineCache a = M.HashMap Int a
@@ -27,8 +27,8 @@ type InputData a = (Int, RandomPair, a)
 
 
 randomPairs :: PairState -> a -> (PairState, InputData a)
-randomPairs (g0, n) x =
-    let (r0, g1) = undefined  -- randomDouble g0
+randomPairs (_g0, n) x =
+    let (r0, _g1) = undefined  -- randomDouble g0
         (r1, g2) = undefined  -- randomDouble g1
     in  ((g2, succ n), (n, (r0, r1), x))
 
@@ -61,8 +61,8 @@ main :: IO ()
 main = do
     args <- fmap readInt . listToMaybe <$> getArgs
     case args of
-        Just k  -> do
-            s <- runResourceT $ (lineC stdinC) `fuseBoth` sourceRandom $$ _ -- foldlC _f _s
-            undefined
-            -- B.interact (B.unlines . sample g k . B.lines)
+        Just _k  -> do
+          -- s <- runResourceT $ (lineC stdinC) `fuseBoth` sourceRandom $$ undefined -- foldlC _f _s
+          undefined
+          -- B.interact (B.unlines . sample g k . B.lines)
         Nothing -> putStrLn "usage: randomSample N"

@@ -6,9 +6,10 @@ module Main where
 
 
 import           Control.Monad
+import           Data.Monoid
 
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
+import qualified Data.Text             as T
+import qualified Data.Text.IO          as TIO
 import           Options.Applicative
 import           System.Random.Shuffle
 
