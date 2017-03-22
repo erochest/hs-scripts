@@ -6,11 +6,12 @@ module Main where
 
 
 import           Control.Error
-import           Control.Monad            (join, mzero)
+import           Control.Monad            (join, mzero, when)
 import           Data.Bifunctor
 import qualified Data.HashMap.Lazy        as M
 import           Data.Semigroup           ((<>))
 import qualified Data.Text                as T
+import qualified Data.Text.IO             as TIO
 import           Data.Yaml                hiding (Parser)
 import           Options.Applicative
 import           Options.Applicative.Text
@@ -23,8 +24,9 @@ type UserLabel = T.Text
 
 data Config
   = Config
-  { configFile  :: !FilePath
-  , configLabel :: !UserLabel
+  { configFile   :: !FilePath
+  , configReport :: !Bool
+  , configLabel  :: !UserLabel
   } deriving (Show, Eq)
 
 data IdentityInfo
@@ -49,6 +51,8 @@ configParser = do
                     <> value (home </> ".switch-user.yaml")
                     <> help "The location of the config file. Default\
                             \ is '~/.switch-user.yaml'")
+    <*> switch (  short 'r' <> long "report"
+               <> help "Write out the files changed afterward.")
     <*> textArgument (  metavar "LABEL" <> value "personal"
                      <> help "The label to switch to. This is one\
                              \ of the keys in the config YAML file. \
@@ -127,4 +131,9 @@ main = runScript $ do
 
   switchGit   email
   switchStack email copyright
+
+  when configReport $ scriptIO $ do
+    home <- getHomeDirectory
+    TIO.putStrLn =<< TIO.readFile (home </> ".gitconfig")
+    TIO.putStrLn =<< TIO.readFile (home </> ".stack/config.yaml")
 
