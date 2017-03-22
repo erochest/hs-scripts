@@ -68,3 +68,17 @@ executable shuffle
                      , random
                      , random-shuffle
                      , optparse-applicative
+
+executable switch-user
+  main-is:             SwitchUser.hs
+  hs-source-dirs:      switch-user/
+  build-depends:       base >=4.8 && <5.0
+                     , errors
+                     , filepath
+                     , directory
+                     , optparse-applicative
+                     , optparse-text
+                     , process
+                     , text
+                     , unordered-containers
+                     , yaml
