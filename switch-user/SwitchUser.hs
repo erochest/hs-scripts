@@ -6,7 +6,7 @@ module Main where
 
 
 import           Control.Error
-import           Control.Monad            (join)
+import           Control.Monad            (join, mzero)
 import           Data.Bifunctor
 import qualified Data.HashMap.Lazy        as M
 import           Data.Semigroup           ((<>))
@@ -27,6 +27,18 @@ data Config
   , configLabel :: !UserLabel
   } deriving (Show, Eq)
 
+data IdentityInfo
+  = Identity
+  { idEmail     :: !String
+  , idCopyright :: !String
+  } deriving (Show, Eq)
+
+instance FromJSON IdentityInfo where
+  parseJSON (Object o) =
+    Identity <$> o .: "email" <*> o .: "copyright"
+  parseJSON _ = mzero
+
+type IdentityIndex = M.HashMap T.Text IdentityInfo
 
 configParser :: IO (Parser Config)
 configParser = do
@@ -43,9 +55,15 @@ configParser = do
                              \ It defaults to 'personal'.")
 
 readConfig :: FilePath -> Script Object
-readConfig = ExceptT
+readConfig = readConfig'
+
+readConfig' :: FromJSON a => FilePath -> Script a
+readConfig' = ExceptT
              . fmap (first prettyPrintParseException)
              . decodeFileEither
+
+readIdentities :: FilePath -> Script IdentityIndex
+readIdentities = readConfig'
 
 getEmail :: Object -> Script String
 getEmail = lookupString "email"
@@ -81,15 +99,9 @@ switchStack email copyright = do
       stack'     = M.insert "templates" (Object templates') stack
   scriptIO $ encodeFile stackConfig stack'
 
-findLabel :: UserLabel -> Object -> Either String Object
-findLabel label =
-  join
-  . second (  note (T.unpack
-                    $ "Label " <> label
-                     <> " does not point to an object.")
-            . toObject)
-  . note (T.unpack $ "Missing label: " <> label)
-  . M.lookup label
+findLabel :: UserLabel -> IdentityIndex -> Either String IdentityInfo
+findLabel label = note (T.unpack $ "Missing label: " <> label)
+                  . M.lookup label
 
 toObject :: Value -> Maybe Object
 toObject (Object o) = Just o
@@ -109,11 +121,9 @@ main = runScript $ do
                <> header "switch users")
   Config{..} <- scriptIO $ execParser opts
 
-  config   <- readConfig configFile
-  switchTo <- hoistEither $ findLabel configLabel config
-
-  email     <- getEmail switchTo
-  copyright <- getCopyright switchTo
+  config <- readIdentities configFile
+  Identity{idEmail=email, idCopyright=copyright} <- hoistEither
+    $ findLabel configLabel config
 
   switchGit   email
   switchStack email copyright
