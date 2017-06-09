@@ -4,12 +4,9 @@
 module Main where
 
 
-import           Control.Applicative
-import           Control.Monad
-import           Control.Monad.Trans.State.Strict
-import qualified Data.ByteString.Lazy.Char8       as B
-import qualified Data.HashMap.Strict              as M
-import qualified Data.List                        as L
+import qualified Data.ByteString.Lazy.Char8    as B
+import qualified Data.HashMap.Strict           as M
+import qualified Data.List                     as L
 import           Data.Maybe
 import           Data.Ord
 import           Data.Traversable
@@ -51,10 +48,8 @@ sample g k xs = map snd
             where ks = M.keys m
                   rm = ks !! truncate (j * k')
 
-
 readInt :: String -> Int
 readInt = read
-
 
 main :: IO ()
 main = do

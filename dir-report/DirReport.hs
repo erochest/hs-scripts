@@ -35,7 +35,7 @@ render = toLazyText . mconcat . map (uncurry renderFileSum) . L.sort . M.toList
 
 renderFileSum :: Maybe T.Text -> FileSum -> Builder
 renderFileSum ext (Sum count, Sum sz) =
-    build "{} => {} / {}\n"
+    build ".{} => {} / {}\n"
           (right 10 ' ' (fromMaybe "" ext), left 8 ' ' count, left 8 ' ' (size sz))
 
 status :: T.Text -> FilePath -> Sh FilePath
