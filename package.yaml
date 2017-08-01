@@ -1,0 +1,54 @@
+name: hs-scripts
+version: '0.0.0.0'
+synopsis: Some small CLI applications written in Haskell. None deserving of their
+  own repository.
+category: System
+author: Eric Rochester
+maintainer: erochest@gmail.com
+license: Apache-2.0
+dependencies:
+- attoparsec
+- base >=4.8 && <5.0
+- bytestring
+- cmdargs
+- data-default
+- directory
+- errors
+- filepath
+- hashable
+- mersenne-random-pure64
+- optparse-applicative
+- optparse-text
+- process
+- random
+- random-shuffle
+- shelly
+- system-fileio
+- system-filepath
+- text
+- text-format
+- transformers
+- unordered-containers
+- yaml
+executables:
+  dir-report:
+    main: DirReport.hs
+    source-dirs: dir-report/
+  shuffle:
+    main: Shuffle.hs
+    source-dirs: shuffle/
+  random-sample:
+    main: RandomSample.hs
+    source-dirs: random-sample/
+  count-items:
+    main: CountItems.hs
+    source-dirs: count-items/
+  sum-int:
+    main: SumInt.hs
+    source-dirs: sumint/
+  slice:
+    main: Slice.hs
+    source-dirs: slice/
+  switch-user:
+    main: SwitchUser.hs
+    source-dirs: switch-user/

@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE OverloadedStrings  #-}
 
 
 module Main where
@@ -7,6 +8,7 @@ module Main where
 import           Control.Applicative
 import           Control.Error
 import           Data.Attoparsec.Text
+import           Data.Bifunctor
 import qualified Data.ByteString.Lazy.Char8 as B
 import           Data.Data
 import qualified Data.List                  as L
@@ -15,11 +17,13 @@ import           System.Console.CmdArgs
 
 -- Command-line processing
 
-data SpanArg = Span
-             { spanArg :: String
-             } deriving (Show, Data, Typeable)
+newtype SpanArg = Span { spanArg :: T.Text }
+  deriving (Show, Data, Typeable)
 
 type Span = (Maybe Int, Maybe Int)
+
+instance Default T.Text where
+  def = T.empty
 
 spanSpec :: SpanArg
 spanSpec = Span { spanArg = def &= args &= typ "M-N"
@@ -29,8 +33,8 @@ spanSpec = Span { spanArg = def &= args &= typ "M-N"
                               \meaning from the first line or to \
                               \the last line, respectively."]
 
-parseSpan :: SpanArg -> Either String Span
-parseSpan = parseOnly spanPair . T.pack . spanArg
+parseSpan :: SpanArg -> Either T.Text Span
+parseSpan = first T.pack . parseOnly spanPair . spanArg
     where spanPair =   (,)
                    <$> optional decimal
                    <*  char '-'
@@ -38,7 +42,7 @@ parseSpan = parseOnly spanPair . T.pack . spanArg
 
 -- sanity check
 
-checkSpan :: Span -> Either String Span
+checkSpan :: Span -> Either T.Text Span
 checkSpan s@(Just f, Just t) | f <= t    = Right s
                              | otherwise = Left "M must be greater than N."
 checkSpan s                              = Right s

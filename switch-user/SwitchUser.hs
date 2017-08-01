@@ -63,7 +63,7 @@ readConfig = readConfig'
 
 readConfig' :: FromJSON a => FilePath -> Script a
 readConfig' = ExceptT
-             . fmap (first prettyPrintParseException)
+             . fmap (first (T.pack . prettyPrintParseException))
              . decodeFileEither
 
 readIdentities :: FilePath -> Script IdentityIndex
@@ -80,8 +80,9 @@ lookupString key =
   hoistEither
   . fmap T.unpack
   . join
+  . fmap (first T.pack)
   . fmap (note "Not a string." . toString)
-  . note (T.unpack $ "Missing key: " <> key)
+  . note ("Missing key: " <> key)
   . M.lookup key
 
 switchGit :: String -> Script ()
@@ -103,8 +104,8 @@ switchStack email copyright = do
       stack'     = M.insert "templates" (Object templates') stack
   scriptIO $ encodeFile stackConfig stack'
 
-findLabel :: UserLabel -> IdentityIndex -> Either String IdentityInfo
-findLabel label = note (T.unpack $ "Missing label: " <> label)
+findLabel :: UserLabel -> IdentityIndex -> Either T.Text IdentityInfo
+findLabel label = note ("Missing label: " <> label)
                   . M.lookup label
 
 toObject :: Value -> Maybe Object
