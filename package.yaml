@@ -31,9 +31,6 @@ dependencies:
 - unordered-containers
 - yaml
 executables:
-  shuffle:
-    main: Shuffle.hs
-    source-dirs: shuffle/
   random-sample:
     main: RandomSample.hs
     source-dirs: random-sample/

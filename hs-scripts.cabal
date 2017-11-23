@@ -43,70 +43,10 @@ executable count-items
     , yaml
   default-language: Haskell2010
 
-executable dir-report
-  main-is: DirReport.hs
-  hs-source-dirs:
-      dir-report/
-  build-depends:
-      attoparsec
-    , base >=4.8 && <5.0
-    , bytestring
-    , cmdargs
-    , data-default
-    , directory
-    , errors
-    , filepath
-    , hashable
-    , mersenne-random-pure64
-    , optparse-applicative
-    , optparse-text
-    , process
-    , random
-    , random-shuffle
-    , shelly
-    , system-fileio
-    , system-filepath
-    , text
-    , text-format
-    , transformers
-    , unordered-containers
-    , yaml
-  default-language: Haskell2010
-
 executable random-sample
   main-is: RandomSample.hs
   hs-source-dirs:
       random-sample/
-  build-depends:
-      attoparsec
-    , base >=4.8 && <5.0
-    , bytestring
-    , cmdargs
-    , data-default
-    , directory
-    , errors
-    , filepath
-    , hashable
-    , mersenne-random-pure64
-    , optparse-applicative
-    , optparse-text
-    , process
-    , random
-    , random-shuffle
-    , shelly
-    , system-fileio
-    , system-filepath
-    , text
-    , text-format
-    , transformers
-    , unordered-containers
-    , yaml
-  default-language: Haskell2010
-
-executable shuffle
-  main-is: Shuffle.hs
-  hs-source-dirs:
-      shuffle/
   build-depends:
       attoparsec
     , base >=4.8 && <5.0
