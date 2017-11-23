@@ -31,9 +31,6 @@ dependencies:
 - unordered-containers
 - yaml
 executables:
-  dir-report:
-    main: DirReport.hs
-    source-dirs: dir-report/
   shuffle:
     main: Shuffle.hs
     source-dirs: shuffle/
