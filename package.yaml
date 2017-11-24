@@ -31,12 +31,6 @@ dependencies:
 - unordered-containers
 - yaml
 executables:
-  random-sample:
-    main: RandomSample.hs
-    source-dirs: random-sample/
-  count-items:
-    main: CountItems.hs
-    source-dirs: count-items/
   sum-int:
     main: SumInt.hs
     source-dirs: sumint/
