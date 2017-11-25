@@ -31,12 +31,6 @@ dependencies:
 - unordered-containers
 - yaml
 executables:
-  sum-int:
-    main: SumInt.hs
-    source-dirs: sumint/
-  slice:
-    main: Slice.hs
-    source-dirs: slice/
   switch-user:
     main: SwitchUser.hs
     source-dirs: switch-user/

@@ -13,66 +13,6 @@ license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
 
-executable slice
-  main-is: Slice.hs
-  hs-source-dirs:
-      slice/
-  build-depends:
-      attoparsec
-    , base >=4.8 && <5.0
-    , bytestring
-    , cmdargs
-    , data-default
-    , directory
-    , errors
-    , filepath
-    , hashable
-    , mersenne-random-pure64
-    , optparse-applicative
-    , optparse-text
-    , process
-    , random
-    , random-shuffle
-    , shelly
-    , system-fileio
-    , system-filepath
-    , text
-    , text-format
-    , transformers
-    , unordered-containers
-    , yaml
-  default-language: Haskell2010
-
-executable sum-int
-  main-is: SumInt.hs
-  hs-source-dirs:
-      sumint/
-  build-depends:
-      attoparsec
-    , base >=4.8 && <5.0
-    , bytestring
-    , cmdargs
-    , data-default
-    , directory
-    , errors
-    , filepath
-    , hashable
-    , mersenne-random-pure64
-    , optparse-applicative
-    , optparse-text
-    , process
-    , random
-    , random-shuffle
-    , shelly
-    , system-fileio
-    , system-filepath
-    , text
-    , text-format
-    , transformers
-    , unordered-containers
-    , yaml
-  default-language: Haskell2010
-
 executable switch-user
   main-is: SwitchUser.hs
   hs-source-dirs:
