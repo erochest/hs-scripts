@@ -30,7 +30,3 @@ dependencies:
 - transformers
 - unordered-containers
 - yaml
-executables:
-  switch-user:
-    main: SwitchUser.hs
-    source-dirs: switch-user/
